@@ -27,7 +27,7 @@
 
 * { box-sizing: border-box; }
 
-html { -webkit-text-size-adjust: 100%; }
+html { -webkit-text-size-adjust: 100%; overflow-x: hidden; }
 
 body {
   margin: 0;
@@ -37,6 +37,7 @@ body {
   font-size: 16px;
   line-height: 1.55;
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden; /* safety net: internal scroll areas (code, tables) should be the only things that scroll sideways */
 }
 
 a { color: var(--accent); }
@@ -54,6 +55,15 @@ input:focus-visible,
   display: grid;
   grid-template-columns: var(--sidebar-w) 1fr;
   min-height: 100vh;
+}
+
+/* grid items default to min-width: auto, which lets unbreakable content
+   (long code lines, long URLs) blow out the whole column instead of
+   scrolling inside itself. min-width: 0 lets each column shrink to the
+   viewport and hand overflow off to .code-block/.table-wrap instead. */
+.sidebar,
+.content {
+  min-width: 0;
 }
 
 /* ---------- sidebar ---------- */
